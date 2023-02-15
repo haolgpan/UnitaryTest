@@ -1,3 +1,5 @@
+package ex2;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class HashTableTest {
