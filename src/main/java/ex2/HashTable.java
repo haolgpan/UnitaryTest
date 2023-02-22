@@ -35,10 +35,31 @@ public class HashTable {
             entries[hash] = hashEntry;
         }
         else {
+            //Original Code
+            /*
             HashEntry temp = entries[hash];
             while(temp.next != null)
                 temp = temp.next;
 
+            temp.next = hashEntry;
+            hashEntry.prev = temp;
+            */
+
+            //Correction code
+            // The bucket is not empty, so look for the key in the linked list of entries
+            HashEntry temp = entries[hash];
+            while(temp != null) {
+                if(temp.key.equals(key)) {
+                    // The key already exists in the hash table, so update the value
+                    temp.value = value;
+                    return;
+                }
+                temp = temp.next;
+            }
+            // The key does not exist in the hash table, so add the new entry to the end of the linked list
+            temp = entries[hash];
+            while(temp.next != null)
+                temp = temp.next;
             temp.next = hashEntry;
             hashEntry.prev = temp;
         }
