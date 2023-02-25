@@ -15,6 +15,7 @@ public class HashTable {
     private HashEntry[] entries = new HashEntry[SIZE];
 
     public int count(){
+
         return this.ITEMS;
     }
 
@@ -89,6 +90,8 @@ public class HashTable {
      * @param key La clau de l'element a trobar.
      */
     public void drop(String key) {
+        //Original Code
+        /*
         int hash = getHash(key);
         if(entries[hash] != null) {
 
@@ -100,6 +103,22 @@ public class HashTable {
             else{
                 if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
                 temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+            }
+        }
+        */
+
+        //Correction Code
+        int hash = getHash(key);
+        if(entries[hash] != null) {
+
+            HashEntry temp = entries[hash];
+            while( temp != null && !temp.key.equals(key))
+                temp = temp.next;
+
+            if(temp != null){
+                if(temp.prev != null) temp.prev.next = temp.next;   // remove temp from the linked list
+                else entries[hash] = temp.next;                     // update entries[hash] if temp is the head node
+                if(temp.next != null) temp.next.prev = temp.prev;   // update the previous node of temp's next node
             }
         }
     }

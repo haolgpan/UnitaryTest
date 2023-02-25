@@ -20,6 +20,7 @@ class HashTableTest {
         //2, 02, 13
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
     @org.junit.jupiter.api.Test
     void put_no_colision_nobuit() {
@@ -29,6 +30,7 @@ class HashTableTest {
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost]\n" +
                 " bucket[15] = [Test1, Tost1]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,6 +42,7 @@ class HashTableTest {
 
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost] -> [2, Tost 2]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
     @org.junit.jupiter.api.Test
     void put_con_colision_2() {
@@ -50,6 +53,7 @@ class HashTableTest {
         //2, 02, 13
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost] -> [2, Tost 2] -> [02, Tost 3]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
     @org.junit.jupiter.api.Test
     void update_no_colision_buit() {
@@ -59,6 +63,7 @@ class HashTableTest {
         //2, 02, 13
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tust]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
     @org.junit.jupiter.api.Test
     void update_colision_nobuit1() {
@@ -69,6 +74,7 @@ class HashTableTest {
         //2, 02, 13
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tust] -> [02, Tast]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
     @org.junit.jupiter.api.Test
     void update_colision_nobuit2() {
@@ -79,6 +85,7 @@ class HashTableTest {
         //2, 02, 13
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost] -> [2, Tust]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
     @org.junit.jupiter.api.Test
     void update_no_colision_nobuit3() {
@@ -90,6 +97,7 @@ class HashTableTest {
         //2, 02, 13
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost] -> [2, Tost 2] -> [02, Tost 3.1]",ht.toString());
+        Assertions.assertEquals(16,ht.size());
     }
 
     @org.junit.jupiter.api.Test
@@ -134,13 +142,62 @@ class HashTableTest {
     @org.junit.jupiter.api.Test
     void get_no_exists_noColision() {
         HashTable ht = new HashTable();
+        ht.put("Test","Tist");
         //2, 02, 13
         ht.get("tast");
         Assertions.assertEquals(null,ht.get("tast"));
     }
     @org.junit.jupiter.api.Test
-    void drop() {
+    void get_no_exists_Colision123() {
+        HashTable ht = new HashTable();
+        ht.put("Test","Tist");
+        ht.put("2","Tast");
+        ht.put("02","Tust");
+        //2, 02, 13
+        Assertions.assertEquals(null,ht.get("13"));
     }
-
+    @org.junit.jupiter.api.Test
+    void drop_buit_noColision() {
+        HashTable ht = new HashTable();
+        ht.put("Test","Tisting");
+        ht.drop("Test");
+        Assertions.assertEquals("",ht.toString());
+    }
+    @org.junit.jupiter.api.Test
+    void drop_nobuit_Colision1() {
+        HashTable ht = new HashTable();
+        ht.put("Test","Tisting");
+        ht.put("2","Tisting tusting");
+        ht.drop("Test");
+        Assertions.assertEquals("\n" +
+                " bucket[2] = [2, Tisting tusting]",ht.toString());
+    }
+    @org.junit.jupiter.api.Test
+    void drop_nobuit_Colision2() {
+        HashTable ht = new HashTable();
+        ht.put("Test","Tisting");
+        ht.put("2","Tisting tusting");
+        ht.put("02","Tosting");
+        ht.drop("2");
+        Assertions.assertEquals("\n" +
+                " bucket[2] = [Test, Tisting] -> [02, Tosting]",ht.toString());
+    }
+    @org.junit.jupiter.api.Test
+    void drop_nobuit_Colision3() {
+        HashTable ht = new HashTable();
+        ht.put("Test","Tisting");
+        ht.put("2","Tisting tusting");
+        ht.put("02","Tosting");
+        ht.drop("02");
+        Assertions.assertEquals("\n" +
+                " bucket[2] = [Test, Tisting] -> [2, Tisting tusting]",ht.toString());
+    }
+    @org.junit.jupiter.api.Test
+    void drop_noelement() {
+        //2, 02, 13
+        HashTable ht = new HashTable();
+        ht.drop("patat");
+        Assertions.assertEquals("",ht.toString());
+    }
 
 }
