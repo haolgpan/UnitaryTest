@@ -3,14 +3,14 @@ package ex2;
 import org.junit.jupiter.api.Assertions;
 
 class HashTableTest {
-
     @org.junit.jupiter.api.Test
-    void count() {
-    }
-
-
-    @org.junit.jupiter.api.Test
-    void size() {
+    void count(){
+        HashTable ht = new HashTable();
+        ht.put("Test","Tost");
+        ht.put("2","Tist");
+        ht.put("potat","tast");
+        Assertions.assertEquals(16,ht.size());
+        Assertions.assertEquals(3,ht.count());
     }
 
     @org.junit.jupiter.api.Test
@@ -21,6 +21,7 @@ class HashTableTest {
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost]",ht.toString());
         Assertions.assertEquals(16,ht.size());
+        Assertions.assertEquals(1,ht.count());
     }
     @org.junit.jupiter.api.Test
     void put_no_colision_nobuit() {
@@ -31,6 +32,7 @@ class HashTableTest {
                 " bucket[2] = [Test, Tost]\n" +
                 " bucket[15] = [Test1, Tost1]",ht.toString());
         Assertions.assertEquals(16,ht.size());
+        Assertions.assertEquals(2,ht.count());
     }
 
     @org.junit.jupiter.api.Test
@@ -43,6 +45,7 @@ class HashTableTest {
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost] -> [2, Tost 2]",ht.toString());
         Assertions.assertEquals(16,ht.size());
+        Assertions.assertEquals(2,ht.count());
     }
     @org.junit.jupiter.api.Test
     void put_con_colision_2() {
@@ -54,6 +57,7 @@ class HashTableTest {
         Assertions.assertEquals("\n" +
                 " bucket[2] = [Test, Tost] -> [2, Tost 2] -> [02, Tost 3]",ht.toString());
         Assertions.assertEquals(16,ht.size());
+        Assertions.assertEquals(3,ht.count());
     }
     @org.junit.jupiter.api.Test
     void update_no_colision_buit() {

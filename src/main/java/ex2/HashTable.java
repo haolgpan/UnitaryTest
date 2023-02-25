@@ -14,43 +14,53 @@ public class HashTable {
     private int ITEMS = 0;
     private HashEntry[] entries = new HashEntry[SIZE];
 
-    public int count(){
-
+    public int count() {
+        int count = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (entries[i] != null) {
+                HashEntry entry = entries[i];
+                while (entry != null) {
+                    count++;
+                    entry = entry.next;
+                }
+            }
+        }
+        this.ITEMS = count;
         return this.ITEMS;
     }
 
-    public int size(){
+    public int size() {
         return this.SIZE;
     }
 
     /**
      * Permet afegir un nou element a la taula.
-     * @param key La clau de l'element a afegir.
+     *
+     * @param key   La clau de l'element a afegir.
      * @param value El propi element que es vol afegir.
      */
     public void put(String key, String value) {
         int hash = getHash(key);
         final HashEntry hashEntry = new HashEntry(key, value);
 
-        if(entries[hash] == null) {
+        if (entries[hash] == null) {
             entries[hash] = hashEntry;
-        }
-        else {
+        } else {
             //Original Code
-            /*
-            HashEntry temp = entries[hash];
-            while(temp.next != null)
-                temp = temp.next;
 
-            temp.next = hashEntry;
-            hashEntry.prev = temp;
-            */
+//            HashEntry temp = entries[hash];
+//            while(temp.next != null)
+//                temp = temp.next;
+//
+//            temp.next = hashEntry;
+//            hashEntry.prev = temp;
+
 
             //Correction code
             // The bucket is not empty, so look for the key in the linked list of entries
             HashEntry temp = entries[hash];
-            while(temp != null) {
-                if(temp.key.equals(key)) {
+            while (temp != null) {
+                if (temp.key.equals(key)) {
                     // The key already exists in the hash table, so update the value
                     temp.value = value;
                     return;
@@ -59,27 +69,54 @@ public class HashTable {
             }
             // The key does not exist in the hash table, so add the new entry to the end of the linked list
             temp = entries[hash];
-            while(temp.next != null)
+            while (temp.next != null)
                 temp = temp.next;
             temp.next = hashEntry;
             hashEntry.prev = temp;
         }
+        /*
+        En aquesta versió actualitzada del mètode put(), primer comprovem si el "bucket"
+        corresponent al codi hash de la clau està buit. Si està buit, simplement afegim
+        la nova entrada al "bucket".
+        Si el "bucket" no està buit, busquem la llista enllaçada d'entrades emmagatzemades
+        en el "bucket" per a la clau. Si la clau ja existeix a la taula de hash, actualitzem
+        el valor associat amb la clau i retornem del mètode.
+        Si la clau no existeix a la taula de hash, afegim la nova entrada al final de
+        la llista enllaçada d'entrades emmagatzemades en el "bucket".
+         */
     }
 
     /**
      * Permet recuperar un element dins la taula.
+     *
      * @param key La clau de l'element a trobar.
      * @return El propi element que es busca (null si no s'ha trobat).
      */
     public String get(String key) {
         int hash = getHash(key);
-        if(entries[hash] != null) {
+        if (entries[hash] != null) {
             HashEntry temp = entries[hash];
-
-            while( !temp.key.equals(key))
+            //Original Code
+            //
+            /*while( !temp.key.equals(key))
                 temp = temp.next;
 
-            return temp.value;
+            return temp.value;*/
+
+            //Modified code
+            while (temp != null && !temp.key.equals(key))
+                temp = temp.next;
+
+            if (temp != null) {
+                return temp.value;
+            }
+            //
+//            En aquest codi actualitzat, la condició del bucle
+//            while es modifica per comprovar també si "temp" no
+//            és nul abans d'accedir al seu camp "key". A més,
+//            s'afegeix una comprovació de nul·litat addicional
+//            després del bucle per garantir que "temp" no sigui nul
+//            abans de retornar el seu camp "value".
         }
 
         return null;
@@ -87,6 +124,7 @@ public class HashTable {
 
     /**
      * Permet esborrar un element dins de la taula.
+     *
      * @param key La clau de l'element a trobar.
      */
     public void drop(String key) {
@@ -109,18 +147,27 @@ public class HashTable {
 
         //Correction Code
         int hash = getHash(key);
-        if(entries[hash] != null) {
+        if (entries[hash] != null) {
 
             HashEntry temp = entries[hash];
-            while( temp != null && !temp.key.equals(key))
+            while (temp != null && !temp.key.equals(key))
                 temp = temp.next;
 
-            if(temp != null){
-                if(temp.prev != null) temp.prev.next = temp.next;   // remove temp from the linked list
+            if (temp != null) {
+                if (temp.prev != null) temp.prev.next = temp.next;   // remove temp from the linked list
                 else entries[hash] = temp.next;                     // update entries[hash] if temp is the head node
-                if(temp.next != null) temp.next.prev = temp.prev;   // update the previous node of temp's next node
+                if (temp.next != null) temp.next.prev = temp.prev;   // update the previous node of temp's next node
             }
         }
+        //
+        /*
+        En el codi modificat, si l'element a esborrar no es troba
+        a la llista enllaçada, el bucle terminarà naturalment.
+        Després de trobar l'element, el codi el elimina de la llista
+        enllaçada actualitzant els nodes anterior i següent adequadament.
+        El node inicial s'actualitza només quan l'element a esborrar és
+        ell mateix el node inicial.
+         */
     }
 
     private int getHash(String key) {
@@ -155,7 +202,7 @@ public class HashTable {
         int bucket = 0;
         StringBuilder hashTableStr = new StringBuilder();
         for (HashEntry entry : entries) {
-            if(entry == null) {
+            if (entry == null) {
                 bucket++;
                 continue;
             }
@@ -166,7 +213,7 @@ public class HashTable {
                     .append(entry.toString());
             bucket++;
             HashEntry temp = entry.next;
-            while(temp != null) {
+            while (temp != null) {
                 hashTableStr.append(" -> ");
                 hashTableStr.append(temp.toString());
                 temp = temp.next;
@@ -177,6 +224,7 @@ public class HashTable {
 
     /**
      * Permet calcular quants elements col·lisionen (produeixen la mateixa posició dins la taula de hash) per a la clau donada.
+     *
      * @param key La clau que es farà servir per calcular col·lisions.
      * @return Una clau que, de fer-se servir, provoca col·lisió amb la que s'ha donat.
      */
@@ -186,11 +234,12 @@ public class HashTable {
 
     /**
      * Permet calcular quants elements col·lisionen (produeixen la mateixa posició dins la taula de hash) per a la clau donada.
-     * @param key La clau que es farà servir per calcular col·lisions.
+     *
+     * @param key      La clau que es farà servir per calcular col·lisions.
      * @param quantity La quantitat de col·lisions a calcular.
      * @return Un llistat de claus que, de fer-se servir, provoquen col·lisió.
      */
-    public ArrayList<String> getCollisionsForKey(String key, int quantity){
+    public ArrayList<String> getCollisionsForKey(String key, int quantity) {
         /*
           Main idea:
           alphabet = {0, 1, 2}
@@ -212,49 +261,49 @@ public class HashTable {
 
         newKey.add(0);
         int collision = getHash(key);
-        int current = newKey.size() -1;
+        int current = newKey.size() - 1;
 
-        while (foundKeys.size() < quantity){
+        while (foundKeys.size() < quantity) {
             //building current key
             String currentKey = "";
-            for(int i = 0; i < newKey.size(); i++)
+            for (int i = 0; i < newKey.size(); i++)
                 currentKey += alphabet[newKey.get(i)];
 
-            if(!currentKey.equals(key) && getHash(currentKey) == collision)
+            if (!currentKey.equals(key) && getHash(currentKey) == collision)
                 foundKeys.add(currentKey);
 
             //increasing the current alphabet key
-            newKey.set(current, newKey.get(current)+1);
+            newKey.set(current, newKey.get(current) + 1);
 
             //overflow over the alphabet on current!
-            if(newKey.get(current) == alphabet.length){
+            if (newKey.get(current) == alphabet.length) {
                 int previous = current;
-                do{
+                do {
                     //increasing the previous to current alphabet key
                     previous--;
-                    if(previous >= 0)  newKey.set(previous, newKey.get(previous) + 1);
+                    if (previous >= 0) newKey.set(previous, newKey.get(previous) + 1);
                 }
                 while (previous >= 0 && newKey.get(previous) == alphabet.length);
 
                 //cleaning
-                for(int i = previous + 1; i < newKey.size(); i++)
+                for (int i = previous + 1; i < newKey.size(); i++)
                     newKey.set(i, 0);
 
                 //increasing size on underflow over the key size
-                if(previous < 0) newKey.add(0);
+                if (previous < 0) newKey.add(0);
 
-                current = newKey.size() -1;
+                current = newKey.size() - 1;
             }
         }
 
-        return  foundKeys;
+        return foundKeys;
     }
 
     public static void main(String[] args) {
         HashTable hashTable = new HashTable();
-        
+
         // Put some key values.
-        for(int i=0; i<30; i++) {
+        for (int i = 0; i < 30; i++) {
             final String key = String.valueOf(i);
             hashTable.put(key, key);
         }
@@ -262,7 +311,7 @@ public class HashTable {
         // Print the HashTable structure
         log("****   HashTable  ***");
         log(hashTable.toString());
-        log("\nValue for key(20) : " + hashTable.get("20") );
+        log("\nValue for key(20) : " + hashTable.get("20"));
     }
 
     private static void log(String msg) {
