@@ -1,4 +1,4 @@
-package ex2;
+package ex3;
 
 // Original source code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
 // Modified by Fernando Porrino Serrano for academic purposes.
@@ -15,6 +15,7 @@ public class HashTable {
     private HashEntry[] entries = new HashEntry[SIZE];
 
     public int count() {
+        //Implementation Code
         int count = 0;
         for (int i = 0; i < SIZE; i++) {
             if (entries[i] != null) {
@@ -26,6 +27,7 @@ public class HashTable {
             }
         }
         this.ITEMS = count;
+        //
         return this.ITEMS;
     }
 
@@ -154,9 +156,9 @@ public class HashTable {
                 temp = temp.next;
 
             if (temp != null) {
-                if (temp.prev != null) temp.prev.next = temp.next;   // remove temp from the linked list
-                else entries[hash] = temp.next;                     // update entries[hash] if temp is the head node
-                if (temp.next != null) temp.next.prev = temp.prev;   // update the previous node of temp's next node
+                if (temp.prev != null) temp.prev.next = temp.next;   // esborrar temp de la linked list
+                else entries[hash] = temp.next;                     // actualitza entries[hash] si temp es el head node
+                if (temp.next != null) temp.next.prev = temp.prev;   // actualitza el node previ de temp's next node
             }
         }
         //
@@ -174,30 +176,6 @@ public class HashTable {
         // piggy backing on java string
         // hashcode implementation.
         return key.hashCode() % SIZE;
-    }
-
-    private class HashEntry {
-        String key;
-        String value;
-
-//        Object key;
-//        Object value;
-
-        // Linked list of same hash entries.
-        HashEntry next;
-        HashEntry prev;
-
-        public HashEntry(String key, String value) {
-            this.key = key;
-            this.value = value;
-            this.next = null;
-            this.prev = null;
-        }
-
-        @Override
-        public String toString() {
-            return "[" + key + ", " + value + "]";
-        }
     }
 
     @Override
@@ -302,22 +280,7 @@ public class HashTable {
         return foundKeys;
     }
 
-    public static void main(String[] args) {
-        HashTable hashTable = new HashTable();
-
-        // Put some key values.
-        for (int i = 0; i < 30; i++) {
-            final String key = String.valueOf(i);
-            hashTable.put(key, key);
-        }
-
-        // Print the HashTable structure
-        log("****   HashTable  ***");
-        log(hashTable.toString());
-        log("\nValue for key(20) : " + hashTable.get("20"));
-    }
-
-    private static void log(String msg) {
+    static void log(String msg) {
         System.out.println(msg);
     }
 }
