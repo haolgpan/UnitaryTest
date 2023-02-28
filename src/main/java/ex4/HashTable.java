@@ -1,4 +1,4 @@
-package ex3;
+package ex4;
 
 // Original source code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
 // Modified by Fernando Porrino Serrano for academic purposes.
@@ -41,7 +41,7 @@ public class HashTable {
      * @param key   La clau de l'element a afegir.
      * @param value El propi element que es vol afegir.
      */
-    public void put(String key, String value) {
+    public void put(String key, Object value) {
         int hash = getHash(key);
         final HashEntry hashEntry = new HashEntry(key, value);
 
@@ -81,7 +81,7 @@ public class HashTable {
          */
     }
 
-    private boolean updateEntry(String key, String value, int hash) {
+    private boolean updateEntry(String key, Object value, int hash) {
         HashEntry temp = entries[hash];
         while (temp != null) {
             if (temp.key.equals(key)) {
@@ -100,7 +100,7 @@ public class HashTable {
      * @param key La clau de l'element a trobar.
      * @return El propi element que es busca (null si no s'ha trobat).
      */
-    public String get(String key) {
+    public Object get(String key) {
         int hash = getHash(key);
         if (entries[hash] != null) {
             HashEntry temp = entries[hash];
