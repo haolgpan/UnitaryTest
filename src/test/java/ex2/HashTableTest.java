@@ -62,7 +62,7 @@ class HashTableTest {
         Assertions.assertEquals(3,ht.count());
     }
     @org.junit.jupiter.api.Test
-    void update_no_colision_buit() { //Falla de prova put-update
+    void update_no_colision_buit() { //Falla de prova put-update (no fa update)
         HashTable ht = new HashTable();
         ht.put("Test","Tost");
         ht.put("Test","Tust");
@@ -159,7 +159,7 @@ class HashTableTest {
         Assertions.assertEquals(null,ht.get("tast"));
     }
     @org.junit.jupiter.api.Test
-    void get_no_exists_Colision123() { //Falla de prova get
+    void get_no_exists_Colision123() { //Falla de prova get (temp is null)
         HashTable ht = new HashTable();
         ht.put("Test","Tist");
         ht.put("2","Tast");
@@ -179,7 +179,7 @@ class HashTableTest {
         Assertions.assertEquals(0,ht.count());
     }
     @org.junit.jupiter.api.Test
-    void drop_nobuit_Colision1() { //Falla de prova drop
+    void drop_nobuit_Colision1() { //Falla de prova drop (es borra tots els nodes en col)
         HashTable ht = new HashTable();
         ht.put("Test","Tisting");
         ht.put("2","Tisting tusting");
