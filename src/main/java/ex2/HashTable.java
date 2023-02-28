@@ -97,11 +97,11 @@ public class HashTable {
         if (entries[hash] != null) {
             HashEntry temp = entries[hash];
             //Original Code
-            //
-            /*while( !temp.key.equals(key))
-                temp = temp.next;
 
-            return temp.value;*/
+//            while( !temp.key.equals(key))
+//                temp = temp.next;
+//
+//            return temp.value;
 
             //Modified code
             while (temp != null && !temp.key.equals(key))
@@ -129,21 +129,21 @@ public class HashTable {
      */
     public void drop(String key) {
         //Original Code
-        /*
-        int hash = getHash(key);
-        if(entries[hash] != null) {
 
-            HashEntry temp = entries[hash];
-            while( !temp.key.equals(key))
-                temp = temp.next;
+//        int hash = getHash(key);
+//        if(entries[hash] != null) {
+//
+//            HashEntry temp = entries[hash];
+//            while( !temp.key.equals(key))
+//                temp = temp.next;
+//
+//            if(temp.prev == null) entries[hash] = null;             //esborrar element únic (no col·lissió)
+//            else{
+//                if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
+//                temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+//            }
+//        }
 
-            if(temp.prev == null) entries[hash] = null;             //esborrar element únic (no col·lissió)
-            else{
-                if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
-                temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
-            }
-        }
-        */
 
         //Correction Code
         int hash = getHash(key);
