@@ -3,7 +3,7 @@ package ex4;
 class HashEntry {
     //    String key;
 //    String value;
-    Object key;
+    String key;
     Object value;
 
     // Linked list of same hash entries.

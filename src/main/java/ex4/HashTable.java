@@ -41,6 +41,8 @@ public class HashTable {
      * @param key   La clau de l'element a afegir.
      * @param value El propi element que es vol afegir.
      */
+    //Old code
+//    public void put(String key, String value) {
     public void put(String key, Object value) {
         int hash = getHash(key);
         final HashEntry hashEntry = new HashEntry(key, value);
@@ -80,7 +82,8 @@ public class HashTable {
         la llista enllaçada d'entrades emmagatzemades en el "bucket".
          */
     }
-
+    //Old code
+//    private boolean updateEntry(String key, String value, int hash) {
     private boolean updateEntry(String key, Object value, int hash) {
         HashEntry temp = entries[hash];
         while (temp != null) {
