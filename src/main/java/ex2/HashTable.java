@@ -15,6 +15,7 @@ public class HashTable {
     private HashEntry[] entries = new HashEntry[SIZE];
 
     public int count() {
+        //Correction Code
         int count = 0;
         for (int i = 0; i < SIZE; i++) {
             if (entries[i] != null) {
